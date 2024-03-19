@@ -88,9 +88,11 @@ base.metadata.create_all(engine)
 create_subtitle(new_subtitle, session)
 
 # Get a subtitle
-subtitle = get_subtitle("subtitle_id", session)
+subtitle = get_subtitle("6685273", session)
 print(subtitle)
 
 
 # Get all subtitles
 all_subtitles = get_all_subtitles(session)
+
+print(all_subtitles)

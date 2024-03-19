@@ -1,5 +1,6 @@
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import IntegrityError
 from lib.db_utils import DatabaseManager
 from lib.models import Attributes, Subtitle
 from lib.database_models import SubtitleModel, AttributesModel
@@ -20,11 +21,15 @@ def map_subtitle(subtitle: Subtitle, db: Session) -> SubtitleModel:
 
 
 def create_subtitle(subtitle: Subtitle, db: Session):
-    db_subtitle = map_subtitle(subtitle, db)
-    db.add(db_subtitle)
-    db.commit()
-    db.refresh(db_subtitle)
-    return db_subtitle
+    try:
+        db_subtitle = map_subtitle(subtitle, db)
+        db.add(db_subtitle)
+        db.commit()
+        db.refresh(db_subtitle)
+        return db_subtitle
+    except IntegrityError:
+        db.rollback()
+        return None
 
 
 def get_subtitle(subtitle_id: str, db: Session) -> Optional[SubtitleModel]:

@@ -68,3 +68,7 @@ class Subtitle(BaseModel):
     id: str
     type: str
     attributes: Attributes
+
+
+if __name__ == "__main__":
+    print("this is the models module")
